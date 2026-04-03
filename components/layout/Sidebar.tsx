@@ -1,10 +1,23 @@
 'use client';
+import {useState, useEffect} from 'react';
 import Link from 'next/link';
-import {useState} from 'react';
-import {LayoutDashboard, BookOpen, Users, GraduationCap, ClipboardList, ChevronDown} from 'lucide-react';
+import {LayoutDashboard, BookOpen, Users, GraduationCap, ClipboardList, ChevronDown, ShieldCheck} from 'lucide-react';
+import {supabase} from '@/lib/supabase';
 
 export function Sidebar() {
   const [openSection, setOpenSection] = useState<string | null>('dnevnik');
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getRole = async () => {
+      const {data: {user}} = await supabase.auth.getUser();
+      if (user) {
+        const {data} = await supabase.from('korisnici').select('uloga').eq('id', user.id).single();
+        if (data) setRole(data.uloga);
+      }
+    };
+    getRole();
+  }, []);
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
@@ -13,6 +26,12 @@ export function Sidebar() {
         <Link href="/" className="flex items-center gap-2 p-2 hover:bg-blue-50 rounded">
           <LayoutDashboard size={20} /> Početna
         </Link>
+        
+        {role === 'admin' && (
+          <Link href="/admin" className="flex items-center gap-2 p-2 hover:bg-blue-50 rounded text-red-600">
+            <ShieldCheck size={20} /> Admin Panel
+          </Link>
+        )}
         
         <div>
           <button 
@@ -41,6 +60,14 @@ export function Sidebar() {
         <Link href="/izostanci" className="flex items-center gap-2 p-2 hover:bg-blue-50 rounded">
           <ClipboardList size={20} /> Izostanci
         </Link>
+        <div className="mt-auto p-4">
+          <button 
+            onClick={() => supabase.auth.signOut()}
+            className="flex items-center gap-2 p-2 hover:bg-red-50 text-red-600 rounded w-full"
+          >
+            Odjava
+          </button>
+        </div>
       </nav>
     </aside>
   );
