@@ -43,10 +43,11 @@ export function Sidebar() {
           </button>
           {openSection === 'dnevnik' && (
             <div className="pl-8 space-y-1 mt-1 text-sm text-gray-600">
-              <Link href="/dnevnik/provjere" className="block p-1 hover:text-blue-600">Pisane provjere</Link>
-              <Link href="/dnevnik/lektira" className="block p-1 hover:text-blue-600">Lektira</Link>
-              <Link href="/dnevnik/raspored" className="block p-1 hover:text-blue-600">Raspored</Link>
-              <Link href="/dnevnik/sati" className="block p-1 hover:text-blue-600">Održani sati</Link>
+              <Link href="/dashboard/dnevnik/provjere" className="block p-1 hover:text-blue-600">Pisane provjere</Link>
+              <Link href="/dashboard/dnevnik/lektira" className="block p-1 hover:text-blue-600">Lektira</Link>
+              <Link href="/dashboard/dnevnik/raspored" className="block p-1 hover:text-blue-600">Raspored</Link>
+              <Link href="/dashboard/dnevnik/odrzani" className="block p-1 hover:text-blue-600">Održani sati</Link>
+              <Link href="/dashboard/dnevnik/planirani" className="block p-1 hover:text-blue-600">Planirani sati</Link>
             </div>
           )}
         </div>
